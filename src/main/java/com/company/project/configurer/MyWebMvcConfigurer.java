@@ -38,9 +38,9 @@ import java.util.List;
  * Spring MVC 配置
  */
 @Configuration
-public class CustomWebMvcConfigurer implements WebMvcConfigurer {
+public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
-    private final Logger logger = LoggerFactory.getLogger(CustomWebMvcConfigurer.class);
+    private final Logger logger = LoggerFactory.getLogger(MyWebMvcConfigurer.class);
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
 
