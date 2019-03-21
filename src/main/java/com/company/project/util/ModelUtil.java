@@ -1,5 +1,7 @@
 package com.company.project.util;
 
+import org.springframework.cglib.beans.BeanMap;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -24,6 +26,9 @@ public class ModelUtil {
     public static <T> Map<String, Object> modelToMap(T model, List<String> fields) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<>();
         if (null == fields || fields.isEmpty()) {
+            return map;
+        }
+        if (null == model) {
             return map;
         }
         List<Field> declaredFields = getAllDeclaredFields(model);
@@ -51,16 +56,15 @@ public class ModelUtil {
     }
 
     /***
-     * Model转换成Map
+     * Model转换成Map(使用了缓存，初次创建bean时需要初始化，之后就使用缓存，所以速度极快)
      */
-    public static <T> Map<String, Object> modelToMapAll(T model) throws IllegalAccessException {
+    public static <T> Map<String, Object> modelToMapAll(T model) {
         Map<String, Object> map = new HashMap<>();
-        List<Field> declaredFields = getAllDeclaredFields(model);
-        for (Field field : declaredFields) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            Object fieldVal = field.get(model);
-            map.put(fieldName, fieldVal);
+        if (null != model) {
+            BeanMap beanMap = BeanMap.create(model);
+            for (Object key : beanMap.keySet()) {
+                map.put(key.toString(), beanMap.get(key));
+            }
         }
         return map;
     }
@@ -68,7 +72,7 @@ public class ModelUtil {
     /***
      * Model列表转换成Map列表
      */
-    public static <T> List<Map<String, Object>> modelListToMapListAll(List<T> modelList) throws IllegalAccessException {
+    public static <T> List<Map<String, Object>> modelListToMapListAll(List<T> modelList) {
         List<Map<String, Object>> result = new ArrayList<>();
         for (T model : modelList) {
             result.add(modelToMapAll(model));
