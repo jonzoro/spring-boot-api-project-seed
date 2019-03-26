@@ -3,6 +3,8 @@ package com.company.project.util;
 import org.springframework.cglib.beans.BeanMap;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ModelUtil {
@@ -122,5 +124,35 @@ public class ModelUtil {
             }
         }
         return diffList;
+    }
+
+    /***
+     * 拷贝Mao和Model之间的同名属性
+     */
+    public static <T> void copyProp4MapToObject(Map sourceMap, T destObj) throws Exception {
+        Field[] fields = destObj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            for (Object entryObj : sourceMap.entrySet()) {
+                Map.Entry entry = (Map.Entry) entryObj;
+                if (field.getName() == entry.getKey()) {
+                    field.setAccessible(true);
+                    if (field.getType() == String.class) {
+                        field.set(destObj, entry.getValue().toString());
+                    } else if (field.getType() == Integer.class) {
+                        field.set(destObj, new Integer(entry.getValue().toString()));
+                    } else if (field.getType() == Long.class) {
+                        field.set(destObj, new Long(entry.getValue().toString()));
+                    } else if (field.getType() == Short.class) {
+                        field.set(destObj, new Short(entry.getValue().toString()));
+                    } else if (field.getType() == Double.class) {
+                        field.set(destObj, new Double(entry.getValue().toString()));
+                    } else if (field.getType() == Date.class) {
+                        field.set(destObj, new SimpleDateFormat().parse(entry.getValue().toString()));
+                    } else if (field.getType() == BigDecimal.class) {
+                        field.set(destObj, new BigDecimal(entry.getValue().toString()));
+                    }
+                }
+            }
+        }
     }
 }
