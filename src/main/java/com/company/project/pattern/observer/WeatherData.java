@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class WeatherData implements Subject {
 
-    public WeatherData() {
+    WeatherData() {
         observers = new ArrayList<>();
     }
 
@@ -16,7 +16,7 @@ public class WeatherData implements Subject {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    void setTemperature(float temperature) {
         this.temperature = temperature;
         tempChanged();
     }
