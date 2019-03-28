@@ -9,6 +9,8 @@ import java.util.*;
 
 public class ModelUtil {
 
+    private ModelUtil() {}
+
     /***
      * 获取实体类所有声明的字段
      */

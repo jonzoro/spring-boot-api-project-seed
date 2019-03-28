@@ -6,6 +6,8 @@ import java.util.Base64;
 
 public class EncryptUtil {
 
+    private EncryptUtil() {}
+
     /**
      * MD5方法
      */

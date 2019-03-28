@@ -17,6 +17,8 @@ import java.util.*;
 
 public class ExcelUtil {
 
+    private ExcelUtil() {}
+
     /***
      * 前端下载Excel文件
      */
